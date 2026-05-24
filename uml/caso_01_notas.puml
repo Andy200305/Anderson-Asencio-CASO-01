@@ -1,0 +1,63 @@
+@startuml caso_01_notas
+
+title Sistema de Notas Académicas — Diagrama de Clases
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor #F0F8FF
+    BorderColor #2C5F8A
+    ArrowColor #2C5F8A
+    FontSize 13
+}
+
+class Estudiante {
+    - _matricula : str
+    - _nombre    : str
+    --
+    + matricula  : str  <<property>>
+    + nombre     : str  <<property>>
+    + __str__()  : str
+}
+
+class Asignatura {
+    - _codigo  : str
+    - _nombre  : str
+    --
+    + codigo   : str  <<property>>
+    + nombre   : str  <<property>>
+    + __str__() : str
+}
+
+class Nota {
+    - _estudiante   : Estudiante
+    - _asignatura   : Asignatura
+    - _calificacion : float
+    --
+    + estudiante    : Estudiante <<property>>
+    + asignatura    : Asignatura <<property>>
+    + calificacion  : float      <<property>>
+    + __str__()     : str
+}
+
+class RegistroNotas {
+    - _estudiantes : List[Estudiante]
+    - _asignaturas : List[Asignatura]
+    - _notas       : List[Nota]
+    --
+    + agregar_estudiante(matricula, nombre)          : Estudiante
+    + agregar_asignatura(codigo, nombre)             : Asignatura
+    + registrar_nota(matricula, codigo, calificacion): Nota
+    + obtener_notas_estudiante(matricula)            : List[Nota]
+    + promedio_estudiante(matricula)                 : float
+    - _buscar_estudiante(matricula)                  : Estudiante
+    - _buscar_asignatura(codigo)                     : Asignatura
+}
+
+' Relaciones
+Nota "0..*" --> "1" Estudiante   : referencia
+Nota "0..*" --> "1" Asignatura   : referencia
+RegistroNotas "1" *-- "0..*" Nota         : contiene
+RegistroNotas "1" *-- "0..*" Estudiante   : administra
+RegistroNotas "1" *-- "0..*" Asignatura   : administra
+
+@enduml
